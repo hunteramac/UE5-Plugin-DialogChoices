@@ -3,52 +3,60 @@
 #include "Misc/AutomationTest.h"
 #include "ObjectDialogLogic.h"
 
-BEGIN_DEFINE_SPEC(FExampleSpec, "Example",
+BEGIN_DEFINE_SPEC(FDialogLogicSpec, "DialogChoice.DemoUI.Logic",
     EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
-    bool myBool;
-// Variables and functions defined here will end up being member of 
-// the FExampleSpec class and will be accessible in the tests
+UObjectDialogLogic* dialogLogic; //member of FDialogLogicSpec class, accessible during tests
+END_DEFINE_SPEC(FDialogLogicSpec);
 
-END_DEFINE_SPEC(FExampleSpec);
-
-void FExampleSpec::Define()
+void FDialogLogicSpec::Define()
 {
-    Describe("GetHighlightIndex()", [this]()
+    //Scope of tests is written during TDD of class
+    Describe("TDD", [this]()
+    {
+        BeforeEach([this]()
         {
-            It("Should equal 0 to start", [this]()
-                {
-                    UObjectDialogLogic* MyDialogLogic = NewObject<UObjectDialogLogic>();
-                    TestEqual("Hightlighted choice starts at 0", MyDialogLogic->GetHighlightIndex(), 0);
-                });
-        });
+            dialogLogic = NewObject<UObjectDialogLogic>();
 
-    Describe("MoveHightlightedChoiceDown()", [this]()
+        });
+        It("should return highlighted choice index zero before and after the first move", [this]()
         {
-            It("Should indicate highlight choice", [this]()
-                {
-                    //arrange
-                    UObjectDialogLogic* MyDialogLogic = NewObject<UObjectDialogLogic>();
-                    MyDialogLogic->NumChoices = 2;
-
-                    TestEqual("0 to start", MyDialogLogic->GetHighlightIndex(), 0);
-                    MyDialogLogic->MoveHightlightedChoiceDown();
-                    TestEqual("1 after moving down once", MyDialogLogic->GetHighlightIndex(),1);
-                    TestEqual("0 after moving down twice (wrap around)", MyDialogLogic->GetHighlightIndex(), 1);
-                });
+            dialogLogic->InitializeObject(10);
+            TestEqual("starts at 0", dialogLogic->GetHighlightIndex(), 0);
+            dialogLogic->MoveHightlightedChoiceDown();
+            TestEqual("remain zero after the first scroll", dialogLogic->GetHighlightIndex(), 0);
         });
-
-    Describe("MoveHightlightedChoiceUp()", [this]()
+        //Clear room to be DRYer
+        It("should return increasing index and wrap around before exceeding the initialized choice number when moving highlighted choice down", [this]()
         {
-            It("Should indicate highlight choice", [this]()
-                {
-                    UObjectDialogLogic* MyDialogLogic = NewObject<UObjectDialogLogic>();
+            dialogLogic->InitializeObject(2);
 
-                    MyDialogLogic->NumChoices =2;
-                    MyDialogLogic->MoveHightlightedChoiceUp();
+            TestEqual("starts at 0", dialogLogic->GetHighlightIndex(), 0);
 
-                    TestEqual("CurrentHightlightedChoice", MyDialogLogic->GetHighlightIndex(), 1);
-                });
+            dialogLogic->MoveHightlightedChoiceDown();
+            TestEqual("remain zero after the first scroll", dialogLogic->GetHighlightIndex(), 0);
+
+            dialogLogic->MoveHightlightedChoiceDown();
+            TestEqual("equal 1 after second scroll", dialogLogic->GetHighlightIndex(), 1);
+
+            dialogLogic->MoveHightlightedChoiceDown();
+            TestEqual("equal 0", dialogLogic->GetHighlightIndex(), 0);
         });
+        It("should return decreasing index and wrap around on zero to maximum index when moving highlighted choice up", [this]()
+        {
+            dialogLogic->InitializeObject(5);
+
+            TestEqual("starts at 0", dialogLogic->GetHighlightIndex(), 0);
+
+            dialogLogic->MoveHightlightedChoiceUp();
+            TestEqual("remain zero after the first scroll up", dialogLogic->GetHighlightIndex(), 0);
+
+            dialogLogic->MoveHightlightedChoiceUp();
+            TestEqual("wrap around to 4 after second scroll", dialogLogic->GetHighlightIndex(), 4);
+
+            dialogLogic->MoveHightlightedChoiceUp();
+            TestEqual("wrap around to 4 after second scroll", dialogLogic->GetHighlightIndex(), 3);
+        });
+    });
 }
 
 #endif

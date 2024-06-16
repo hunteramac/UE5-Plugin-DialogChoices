@@ -7,6 +7,13 @@ UObjectDialogLogic::UObjectDialogLogic()
 {
 	currentHightlightedChoice = 0;
 	NumChoices = 0;
+	newDisplay = true;
+}
+
+void UObjectDialogLogic::InitializeObject(int MaxChoices)
+{
+	NumChoices = MaxChoices;
+	newDisplay = true;
 }
 
 UObjectDialogLogic::~UObjectDialogLogic()
@@ -18,17 +25,29 @@ int UObjectDialogLogic::GetHighlightIndex() {
 }
 
 void UObjectDialogLogic::MoveHightlightedChoiceDown() {
-	++currentHightlightedChoice;
-	//wrap around
-	if (currentHightlightedChoice > NumChoices) {
+	if (newDisplay) {
+		newDisplay = false;
 		currentHightlightedChoice = 0;
+	}
+	else {
+		if (currentHightlightedChoice+1>=NumChoices) {
+			currentHightlightedChoice = 0;
+		}else{
+			++currentHightlightedChoice;
+		}
 	}
 }
 
 void UObjectDialogLogic::MoveHightlightedChoiceUp() {
-	--currentHightlightedChoice;
-	//wrap around
-	if (currentHightlightedChoice < 0) {
-		currentHightlightedChoice = NumChoices-1;
+	if (newDisplay) {
+		newDisplay = false;
+	}
+	else {
+		if (currentHightlightedChoice - 1 < 0){
+			currentHightlightedChoice = NumChoices-1;
+		}
+		else {
+			--currentHightlightedChoice;
+		}
 	}
 }

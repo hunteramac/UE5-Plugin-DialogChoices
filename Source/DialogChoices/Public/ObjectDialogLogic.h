@@ -9,13 +9,16 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class DIALOGCHOICES_API UObjectDialogLogic : public UObject
 {
 	GENERATED_BODY()
 public:
 	UObjectDialogLogic();
 	~UObjectDialogLogic();
+
+	UFUNCTION(BlueprintCallable)
+	void InitializeObject(int MaxChoices);
 
 	UFUNCTION(BlueprintCallable)
 	int GetHighlightIndex();
@@ -30,5 +33,5 @@ public:
 
 private:
 	int currentHightlightedChoice;
-	
+	bool newDisplay;
 };
