@@ -1,0 +1,24 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "DialogChoices",
+	"Description": "Implements blueprint nodes a designer can use to create dialog/social interaction choices for a player with a node based control flow. Includes demo UI implementation.",
+	"Category": "Other",
+	"CreatedBy": "",
+	"CreatedByURL": "",
+	"DocsURL": "https://github.com/hunteramac/DialogChoices",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "DialogChoices",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
