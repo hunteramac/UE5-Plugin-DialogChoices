@@ -8,10 +8,8 @@ DECLARE_DELEGATE_OneParam(FCommonMessagingResultDelegate, int /* Result */);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FShowChoicesDelegateRelay);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FShowOutcomeDelegateRelay);
-
 /**
- *
+ * SRP -> Conveying choices to UI, and carrying player's choice back.
  */
 UCLASS()
 class DIALOGCHOICES_API UChoiceUIGameInstanceSubsystem : public UGameInstanceSubsystem
@@ -37,23 +35,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SubsystemShowChoice();
-
-
-	// Display Outcome Handling
-	UPROPERTY(BlueprintReadWrite)
-	FText Outcome;
-
-	UPROPERTY(BlueprintAssignable)
-	FShowOutcomeDelegateRelay OnSubsystemShowOutcome;
-
-	UFUNCTION(BlueprintCallable)
-	void SubsystemShowOutcome();
-
-	UFUNCTION(BlueprintCallable)
-	void SetInactionDelays(bool state);
-
-	UPROPERTY(BlueprintReadOnly);
-	bool InactionContinueDelay;
 
 private:
 	FCommonMessagingResultDelegate OnResultCallback;

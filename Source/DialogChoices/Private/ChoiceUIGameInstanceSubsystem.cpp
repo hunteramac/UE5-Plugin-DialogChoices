@@ -17,11 +17,3 @@ void UChoiceUIGameInstanceSubsystem::ShowConfirmation(TArray<FText> Actions, FCo
 void UChoiceUIGameInstanceSubsystem::SubsystemShowChoice() {
 	OnSubsystemShowChoice.Broadcast();
 }
-
-void UChoiceUIGameInstanceSubsystem::SubsystemShowOutcome() {
-	OnSubsystemShowOutcome.Broadcast();
-}
-
-void UChoiceUIGameInstanceSubsystem::SetInactionDelays(bool state) {
-	InactionContinueDelay = state;
-}
