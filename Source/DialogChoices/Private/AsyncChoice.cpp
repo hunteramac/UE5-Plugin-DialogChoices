@@ -34,6 +34,9 @@ void UAsyncChoice::Activate()
 
 		//Pass UI, choices to be displayed(list of player actions), and the callback to have node return choice made
 		MySubsystem->ShowConfirmation(Actions, ResultCallback);
+		
+		//Trigger event that we expect ui bound to
+		MySubsystem->SubsystemShowChoice();
 		return;
 	}
 
